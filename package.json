@@ -20,6 +20,8 @@
     "ioredis": "^5.5.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.12.0",
+    "react-icons": "^5.5.0",
+    "react-router-dom": "^7.3.0",
     "stripe": "^17.7.0"
   },
   "devDependencies": {
