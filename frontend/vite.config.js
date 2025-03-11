@@ -1,12 +1,13 @@
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import tailwindcss from "@tailwindcss/vite"; // https://vite.dev/config/
+import react from "@vitro/plugin-react";
+import { imagetools } from "vite-imagetools";
+
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
-  server: {
-    proxy: {
-      "/api": {
-        target: "http://localhost:5000",
+  plugins: [react(), imagetools()],
+  build: {
+    rollupOptions: {
+      output: {
+        assetFileNames: "assets/[hash][extname]",
       },
     },
   },
