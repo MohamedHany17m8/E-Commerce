@@ -65,26 +65,6 @@ export const signup = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-export const logout = async (req, res) => {
-  try {
-    const refreshToken = req.cookies.refreshToken;
-    if (refreshToken) {
-      const decoded = jwt.verify(
-        refreshToken,
-        process.env.REFRESH_TOKEN_SECRET
-      );
-      await redis.del(`refresh_token:${decoded.userId}`);
-    }
-
-    res.clearCookie("accessToken");
-    res.clearCookie("refreshToken");
-    res.clearCookie("jwt");
-    res.json({ message: "Logged out successfully" });
-  } catch (error) {
-    console.log("Error in logout controller", error.message);
-    res.status(500).json({ message: "Server error", error: error.message });
-  }
-};
 
 export const login = async (req, res) => {
   try {
@@ -110,6 +90,27 @@ export const login = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const logout = async (req, res) => {
+  try {
+    const refreshToken = req.cookies.refreshToken;
+    if (refreshToken) {
+      const decoded = jwt.verify(
+        refreshToken,
+        process.env.REFRESH_TOKEN_SECRET
+      );
+      await redis.del(`refresh_token:${decoded.userId}`);
+    }
+
+    res.clearCookie("accessToken");
+    res.clearCookie("refreshToken");
+    res.json({ message: "Logged out successfully" });
+  } catch (error) {
+    console.log("Error in logout controller", error.message);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
 // this will refresh the access token
 export const refreshToken = async (req, res) => {
   try {
