@@ -22,7 +22,7 @@ const __dirname = path.resolve();
 // Add CORS configuration with hardcoded origins
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://e-commerce-zeta-roan-95.vercel.app"],
+    origin: ["http://localhost:3000", "https://e-commerce-smoky-xi.vercel.app"],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
