@@ -15,7 +15,6 @@ import { connectDB } from "./lib/db.js";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
 
 const __dirname = path.resolve();
 
@@ -31,15 +30,6 @@ app.use("/api/coupons", couponRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/analytics", analyticsRoutes);
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "/frontend/dist")));
+connectDB();
 
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
-  });
-}
-
-app.listen(PORT, () => {
-  console.log("Server is running on http://localhost:" + PORT);
-  connectDB();
-});
+export default app;
