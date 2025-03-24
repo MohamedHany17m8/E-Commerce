@@ -1,16 +1,27 @@
 import axios from "axios";
 
+const isProduction = window.location.hostname !== "localhost";
+
 const axiosInstance = axios.create({
-  baseURL: "/api", // Use the proxy from vite.config.js
+  // In production, use the full API URL
+  baseURL: isProduction 
+    ? "https://e-commerce-api-rose-eta.vercel.app/api"
+    : "/api", // In development, use the proxy
   timeout: 15000,
-  withCredentials: true, // send cookies to the server
+  withCredentials: true,
 });
 
-// Add error handling
+// Add error handling with better logging
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.error("API Error:", error);
+    console.error("API Error:", {
+      url: error.config?.url,
+      method: error.config?.method,
+      status: error.response?.status,
+      message: error.message
+    });
+    
     return Promise.reject(error?.response?.data || error.message);
   }
 );

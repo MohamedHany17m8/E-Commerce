@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { imagetools } from "vite-imagetools";
 import tailwindcss from "@tailwindcss/vite";
+
 export default defineConfig({
   plugins: [react(), imagetools(), tailwindcss()],
   build: {
@@ -17,6 +18,8 @@ export default defineConfig({
       "/api": {
         target: "https://e-commerce-api-rose-eta.vercel.app",
         changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path
       },
     },
   },
