@@ -16,24 +16,43 @@ import { connectDB } from "./lib/db.js";
 dotenv.config();
 
 const app = express();
-
 const __dirname = path.resolve();
+const isProduction = process.env.NODE_ENV === "production";
 
-// Add CORS configuration with hardcoded origins
+// Enhanced CORS configuration
 app.use(
   cors({
     origin: ["http://localhost:3000", "https://e-commerce-smoky-xi.vercel.app"],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
+    exposedHeaders: ["set-cookie"]
   })
 );
 
 // Handle preflight requests
 app.options("*", cors());
 
-app.use(express.json({ limit: "10mb" })); // allows you to parse the body of the request
+// Cookie parser with secure options
 app.use(cookieParser());
+
+// Configure cookie settings middleware
+app.use((req, res, next) => {
+  // Set secure cookie options for auth routes
+  res.cookie = function(name, value, options) {
+    const cookieOptions = {
+      ...options,
+      sameSite: isProduction ? 'None' : 'Lax',
+      secure: isProduction,
+      httpOnly: true,
+      path: '/'
+    };
+    return express.response.cookie.call(this, name, value, cookieOptions);
+  };
+  next();
+});
+
+app.use(express.json({ limit: "10mb" })); // allows you to parse the body of the request
 app.get("/", (req, res) => {
   res.send("API is running....");
 });
