@@ -3,14 +3,14 @@ import axios from "axios";
 const isProduction = window.location.hostname !== "localhost";
 
 const axiosInstance = axios.create({
-  baseURL: isProduction 
-    ? "https://e-commerce-api-rose-eta.vercel.app/api"
+  baseURL: isProduction
+    ? "https://e-commerce-server-dusky-two.vercel.app/api"
     : "/api",
   timeout: 15000,
   withCredentials: true,
   headers: {
-    "Content-Type": "application/json"
-  }
+    "Content-Type": "application/json",
+  },
 });
 
 // Request interceptor to add auth token from localStorage if available
@@ -36,12 +36,11 @@ axiosInstance.interceptors.response.use(
       url: error.config?.url,
       method: error.config?.method,
       status: error.response?.status,
-      message: error.message
+      message: error.message,
     });
-    
+
     return Promise.reject(error?.response?.data || error.message);
   }
 );
 
 export default axiosInstance;
- 

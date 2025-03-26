@@ -16,10 +16,10 @@ export default defineConfig({
     port: 3000,
     proxy: {
       "/api": {
-        target: "https://e-commerce-api-rose-eta.vercel.app",
+        target: "https://e-commerce-server-dusky-two.vercel.app",
         changeOrigin: true,
         secure: false,
-        rewrite: (path) => path
+        rewrite: (path) => path,
       },
     },
   },
